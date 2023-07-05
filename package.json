@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-openai-starter",
+  "name": "content-gen-ai",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -26,6 +26,7 @@
     "stripe": "^11.8.0"
   },
   "devDependencies": {
+    "@types/react": "18.2.14",
     "autoprefixer": "^10.4.13",
     "eslint": "8.33.0",
     "eslint-config-next": "13.1.6",
