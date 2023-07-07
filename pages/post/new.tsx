@@ -1,27 +1,49 @@
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { GetServerSideProps } from 'next';
+import AppLayout from '../../components/AppLayout/AppLayout';
 
-type Props = {};
+// post/new generate topics with OPENAI API
 
-const NewPost: React.FC<Props> = (props) => {
-	console.log(props);
+type Props = {
+	children: React.ReactNode;
+};
+type PageWithLayout<T> = T & { getLayout?: (page: JSX.Element, pageProps?: any) => JSX.Element };
+type PageProps = {
+	children: React.ReactNode;
+};
+
+const NewPost: PageWithLayout<React.FC<Props>> = (props) => {
+	console.log('new', 5);
+	console.log('newPost props', props);
 	return (
 		<div>
-			<h1>New Post Page</h1>
+			<h1>b. New Post Page</h1>
+			<div>{props.children}</div>
 		</div>
 	);
 };
-
 export default NewPost;
 
-// getServerSideProps is a special function that runs server side Whenever this particular page is requested in the browser and it provides this page component with any props that it may need to render properly.
+// Only pages that have a getLayout function defined will be wrapped with the layout
+NewPost.getLayout = function getLayout(page: JSX.Element, pageProps: PageProps) {
+	console.log('new', 3);
+	console.log('getLayout props', pageProps);
+	return (
+		<AppLayout {...pageProps}>
+			{page}
+			<div>d. hello</div>
+			<div>e. yoooooo</div>
+		</AppLayout>
+	);
+};
+
 export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
 	getServerSideProps: async (ctx) => {
 		// The context (ctx) parameter is the context object for the getServerSideProps function.
 		// You can use this to access request-specific parameters.
 		return {
 			props: {
-				test: 'this is a test',
+				test: 'test from new post',
 			},
 		};
 	},
