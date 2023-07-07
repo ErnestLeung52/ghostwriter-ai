@@ -13,8 +13,7 @@ type PageProps = {
 };
 
 const NewPost: PageWithLayout<React.FC<Props>> = (props) => {
-	console.log('new', 5);
-	console.log('newPost props', props);
+	// console.log('new', 5);
 	return (
 		<div>
 			<h1>b. New Post Page</h1>
@@ -26,15 +25,8 @@ export default NewPost;
 
 // Only pages that have a getLayout function defined will be wrapped with the layout
 NewPost.getLayout = function getLayout(page: JSX.Element, pageProps: PageProps) {
-	console.log('new', 3);
-	console.log('getLayout props', pageProps);
-	return (
-		<AppLayout {...pageProps}>
-			{page}
-			<div>d. hello</div>
-			<div>e. yoooooo</div>
-		</AppLayout>
-	);
+	// console.log('new', 3);
+	return <AppLayout {...pageProps}>{page}</AppLayout>;
 };
 
 export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
