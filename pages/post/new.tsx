@@ -1,7 +1,7 @@
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { GetServerSideProps } from 'next';
 import AppLayout from '../../components/AppLayout/AppLayout';
-import { PageProps } from '../../types';
+import { BlogPostResponse, PageProps, PromptData } from '../../types';
 import { useState } from 'react';
 
 // post/new generate topics with OPENAI API
@@ -16,13 +16,15 @@ import { useState } from 'react';
 // };
 type PageWithLayout<T> = T & { getLayout?: (page: JSX.Element, pageProps?: PageProps) => JSX.Element };
 
-
 const NewPost: PageWithLayout<React.FC<PageProps>> = (props) => {
 	// console.log('new', 5);
 
-	const [topic, setTopic] = useState('');
-	const [keywords, setSetKeywords] = useState('');
-	const [postContent, setPostContent] = useState('');
+	const [postContent, setPostContent] = useState<string>('');
+	const [formData, setFormData] = useState<PromptData>({ topic: '', keywords: '' });
+
+	const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+		setFormData({ ...formData, [event.target.name]: event.target.value });
+	};
 
 	const handlePostGenSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -31,10 +33,11 @@ const NewPost: PageWithLayout<React.FC<PageProps>> = (props) => {
 			headers: {
 				'content-type': 'application/json',
 			},
-			body: JSON.stringify({ topic, keywords }),
+			body: JSON.stringify(formData),
 		});
 
-		const json = await response.json();
+		const json: BlogPostResponse = await response.json();
+
 		setPostContent(json.post.postContent);
 	};
 
@@ -47,8 +50,9 @@ const NewPost: PageWithLayout<React.FC<PageProps>> = (props) => {
 					</label>
 					<textarea
 						className='resize-none border border-slate-500 w-full block my-2 px-4 py-2 rounded-sm'
-						value={topic}
-						onChange={(e) => setTopic(e.target.value)}
+						name='topic'
+						value={formData.topic}
+						onChange={handleInputChange}
 					/>
 				</div>
 				<div>
@@ -57,8 +61,9 @@ const NewPost: PageWithLayout<React.FC<PageProps>> = (props) => {
 					</label>
 					<textarea
 						className='resize-none border border-slate-500 w-full block my-2 px-4 py-2 rounded-sm'
-						value={keywords}
-						onChange={(e) => setSetKeywords(e.target.value)}
+						name='keywords'
+						value={formData.keywords}
+						onChange={handleInputChange}
 					/>
 				</div>
 
@@ -71,6 +76,7 @@ const NewPost: PageWithLayout<React.FC<PageProps>> = (props) => {
 		</div>
 	);
 };
+
 export default NewPost;
 
 // Only pages that have a getLayout function defined will be wrapped with the layout

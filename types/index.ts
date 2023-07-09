@@ -17,3 +17,13 @@ export type PageProps = {
 	user: Auth0User;
 	children: React.ReactNode;
 };
+
+export type PromptData = { topic: string; keywords: string };
+
+type BlogPostData = {
+	postContent: string;
+	title: string;
+	metaDescription: string;
+};
+
+export type BlogPostResponse = { post: BlogPostData };

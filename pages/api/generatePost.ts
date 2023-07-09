@@ -1,12 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Configuration, OpenAIApi } from 'openai';
+import { BlogPostResponse, PromptData } from '../../types';
 
-type generatePostReqBody = {
-	topic: string;
-	keywords: string;
-};
-
-export default async function handler(req: NextApiRequest & { body: generatePostReqBody }, res: NextApiResponse) {
+export default async function handler(
+	req: NextApiRequest & { body: PromptData },
+	res: NextApiResponse<BlogPostResponse>
+): Promise<void> {
 	const config = new Configuration({ apiKey: process.env.OPENAI_API_KEY });
 
 	const openai = new OpenAIApi(config);
