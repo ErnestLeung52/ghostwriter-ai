@@ -4,16 +4,15 @@ import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoins } from '@fortawesome/free-solid-svg-icons';
 import { Logo } from '../Logo/index';
+import { PageProps } from '../../types';
 
-type Props = {};
+// interface AppLayoutProps {
+// 	children?: React.ReactNode;
+// }
 
-interface AppLayoutProps {
-	children?: React.ReactNode;
-}
-
-const AppLayout: React.FC<AppLayoutProps> = (props) => {
+const AppLayout: React.FC<PageProps> = (props) => {
 	const { user } = useUser();
-
+	console.log(3, props);
 	// console.log('layout', 4);
 	return (
 		<div className='grid grid-cols-[300px_1fr] h-screen max-h-screen'>

@@ -1,18 +1,21 @@
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { GetServerSideProps } from 'next';
 import AppLayout from '../../components/AppLayout/AppLayout';
+import { PageProps } from '../../types';
 
 // post/new generate topics with OPENAI API
 
-type Props = {
-	children: React.ReactNode;
-};
-type PageWithLayout<T> = T & { getLayout?: (page: JSX.Element, pageProps?: any) => JSX.Element };
-type PageProps = {
-	children: React.ReactNode;
-};
+// type Props = {
+// 	test: string;
+// 	user: any;
+// 	children: React.ReactNode;
+// };
+// type PageProps = {
+// 	children: React.ReactNode;
+// };
+type PageWithLayout<T> = T & { getLayout?: (page: JSX.Element, pageProps?: PageProps) => JSX.Element };
 
-const NewPost: PageWithLayout<React.FC<Props>> = (props) => {
+const NewPost: PageWithLayout<React.FC<PageProps>> = (props) => {
 	// console.log('new', 5);
 	return (
 		<div>

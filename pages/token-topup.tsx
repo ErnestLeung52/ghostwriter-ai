@@ -1,11 +1,12 @@
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { GetServerSideProps } from 'next';
 import AppLayout from '../components/AppLayout/AppLayout';
+import { PageProps } from '../types';
 
 type Props = {};
-type PageProps = {
-	children: React.ReactNode;
-};
+// type PageProps = {
+// 	children: React.ReactNode;
+// };
 
 const TokenTopup = (props: Props) => {
 	return <div>token-topup</div>;
