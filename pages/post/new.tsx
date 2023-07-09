@@ -2,6 +2,7 @@ import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { GetServerSideProps } from 'next';
 import AppLayout from '../../components/AppLayout/AppLayout';
 import { PageProps } from '../../types';
+import { useState } from 'react';
 
 // post/new generate topics with OPENAI API
 
@@ -17,10 +18,25 @@ type PageWithLayout<T> = T & { getLayout?: (page: JSX.Element, pageProps?: PageP
 
 const NewPost: PageWithLayout<React.FC<PageProps>> = (props) => {
 	// console.log('new', 5);
+
+	const [postContent, setPostContent] = useState('');
+
+	const handlePostGenClick = async () => {
+		const response = await fetch('/api/generatePost', {
+			method: 'POST',
+		});
+
+		const json = await response.json();
+		setPostContent(json.post.postContent);
+	};
+
 	return (
 		<div>
 			<h1>b. New Post Page</h1>
-			<div>{props.children}</div>
+			<button className='btn' onClick={handlePostGenClick}>
+				Generate
+			</button>
+			<div className='max-w-screen-sm p-10' dangerouslySetInnerHTML={{ __html: postContent }} />
 		</div>
 	);
 };
