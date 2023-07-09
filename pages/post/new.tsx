@@ -16,14 +16,22 @@ import { useState } from 'react';
 // };
 type PageWithLayout<T> = T & { getLayout?: (page: JSX.Element, pageProps?: PageProps) => JSX.Element };
 
+
 const NewPost: PageWithLayout<React.FC<PageProps>> = (props) => {
 	// console.log('new', 5);
 
+	const [topic, setTopic] = useState('');
+	const [keywords, setSetKeywords] = useState('');
 	const [postContent, setPostContent] = useState('');
 
-	const handlePostGenClick = async () => {
+	const handlePostGenSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
 		const response = await fetch('/api/generatePost', {
 			method: 'POST',
+			headers: {
+				'content-type': 'application/json',
+			},
+			body: JSON.stringify({ topic, keywords }),
 		});
 
 		const json = await response.json();
@@ -32,10 +40,33 @@ const NewPost: PageWithLayout<React.FC<PageProps>> = (props) => {
 
 	return (
 		<div>
-			<h1>b. New Post Page</h1>
-			<button className='btn' onClick={handlePostGenClick}>
-				Generate
-			</button>
+			<form onSubmit={handlePostGenSubmit}>
+				<div>
+					<label>
+						<strong>Generate a blog post on the topic of:</strong>
+					</label>
+					<textarea
+						className='resize-none border border-slate-500 w-full block my-2 px-4 py-2 rounded-sm'
+						value={topic}
+						onChange={(e) => setTopic(e.target.value)}
+					/>
+				</div>
+				<div>
+					<label>
+						<strong>Targeting the following keywords:</strong>
+					</label>
+					<textarea
+						className='resize-none border border-slate-500 w-full block my-2 px-4 py-2 rounded-sm'
+						value={keywords}
+						onChange={(e) => setSetKeywords(e.target.value)}
+					/>
+				</div>
+
+				<button type='submit' className='btn'>
+					Generate
+				</button>
+			</form>
+
 			<div className='max-w-screen-sm p-10' dangerouslySetInnerHTML={{ __html: postContent }} />
 		</div>
 	);

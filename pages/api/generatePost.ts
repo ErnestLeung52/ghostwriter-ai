@@ -1,13 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Configuration, OpenAIApi } from 'openai';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+type generatePostReqBody = {
+	topic: string;
+	keywords: string;
+};
+
+export default async function handler(req: NextApiRequest & { body: generatePostReqBody }, res: NextApiResponse) {
 	const config = new Configuration({ apiKey: process.env.OPENAI_API_KEY });
 
 	const openai = new OpenAIApi(config);
 
-	const topic = 'Top 10 tips for dog owners';
-	const keywords = 'dog health issues, dog breeds, dog care';
+	const { topic, keywords } = req.body;
 
 	const response = await openai.createCompletion({
 		model: 'text-davinci-003',
@@ -25,8 +29,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
     `,
 	});
-
-	console.log(response.data);
 
 	res.status(200).json({ post: JSON.parse(response.data.choices[0]?.text.split('\n').join('')) });
 }
