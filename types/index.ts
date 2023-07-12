@@ -20,10 +20,17 @@ export type PageProps = {
 
 export type PromptData = { topic: string; keywords: string };
 
-type BlogPostData = {
+export type BlogPostData = {
 	postContent: string;
 	title: string;
 	metaDescription: string;
+	topic: string;
+	keywords: string;
+	userId: string;
+	created: Date;
 };
 
-export type BlogPostResponse = { post: BlogPostData };
+export type GeneratePostAPIResponse = {
+	post?: BlogPostData;
+	error?: string;
+};

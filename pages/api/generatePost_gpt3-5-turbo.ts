@@ -1,12 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Configuration, OpenAIApi } from 'openai';
-import { BlogPostRejected, BlogPostResponse, PromptData } from '../../types';
+import { GeneratePostAPIResponse, PromptData } from '../../types';
 import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
 import clientPromise from '../../lib/mongodb';
 
 export default withApiAuthRequired(async function handler(
 	req: NextApiRequest & { body: PromptData },
-	res: NextApiResponse<BlogPostResponse | BlogPostRejected>
+	res: NextApiResponse<GeneratePostAPIResponse>
 ): Promise<void> {
 	const { user } = await getSession(req, res);
 
