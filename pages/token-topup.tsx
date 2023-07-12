@@ -9,7 +9,20 @@ type Props = {};
 // };
 
 const TokenTopup = (props: Props) => {
-	return <div>token-topup</div>;
+	const handleAddTokenClick = async () => {
+		await fetch(`/api/addTokens`, {
+			method: 'POST',
+		});
+	};
+
+	return (
+		<div>
+			<h1>token-topup</h1>
+			<button className='btn' onClick={handleAddTokenClick}>
+				Add tokens
+			</button>
+		</div>
+	);
 };
 
 export default TokenTopup;
