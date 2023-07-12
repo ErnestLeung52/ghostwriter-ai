@@ -83,7 +83,7 @@ export default withApiAuthRequired(async function handler(
 		post: { postContent, title, metaDescription, topic, keywords, userId: userProfile._id, created: new Date() },
 	};
 
-	const post = await db.collection('posts').insertOne(postResult);
+	const post = await db.collection('posts').insertOne(postResult.post);
 
-	res.status(200).json(postResult);
+	res.status(200).json({ postId: post.insertedId });
 });

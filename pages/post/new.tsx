@@ -1,25 +1,14 @@
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { GetServerSideProps } from 'next';
 import AppLayout from '../../components/AppLayout/AppLayout';
-import { GeneratePostAPIResponse, PageProps, PromptData } from '../../types';
+import { GeneratePostAPIResponse, PageProps, PageWithLayout, PromptData } from '../../types';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 // post/new generate topics with OPENAI API
-
-// type Props = {
-// 	test: string;
-// 	user: any;
-// 	children: React.ReactNode;
-// };
-// type PageProps = {
-// 	children: React.ReactNode;
-// };
-type PageWithLayout<T> = T & { getLayout?: (page: JSX.Element, pageProps?: PageProps) => JSX.Element };
-
 const NewPost: PageWithLayout<React.FC<PageProps>> = (props) => {
 	// console.log('new', 5);
-
-	const [postContent, setPostContent] = useState<string>('');
+	const router = useRouter();
 	const [formData, setFormData] = useState<PromptData>({ topic: '', keywords: '' });
 
 	const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -38,11 +27,13 @@ const NewPost: PageWithLayout<React.FC<PageProps>> = (props) => {
 
 		const json: GeneratePostAPIResponse = await response.json();
 
-		if (json.error) {
+		console.log('RESULT:', json);
+
+		if (json.error || !json.postId) {
 			console.error(json.error);
 			return;
 		} else {
-			setPostContent(json.post.postContent);
+			router.push(`/post/${json.postId}`);
 		}
 	};
 
@@ -77,7 +68,7 @@ const NewPost: PageWithLayout<React.FC<PageProps>> = (props) => {
 				</button>
 			</form>
 
-			<div className='max-w-screen-sm p-10' dangerouslySetInnerHTML={{ __html: postContent }} />
+			{/* <div className='max-w-screen-sm p-10' dangerouslySetInnerHTML={{ __html: postContent }} /> */}
 		</div>
 	);
 };

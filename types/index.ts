@@ -18,6 +18,8 @@ export type PageProps = {
 	children: React.ReactNode;
 };
 
+export type PageWithLayout<T> = T & { getLayout?: (page: JSX.Element, pageProps?: PageProps) => JSX.Element };
+
 export type PromptData = { topic: string; keywords: string };
 
 export type BlogPostData = {
@@ -31,6 +33,6 @@ export type BlogPostData = {
 };
 
 export type GeneratePostAPIResponse = {
-	post?: BlogPostData;
+	postId?: string;
 	error?: string;
 };
