@@ -1,7 +1,7 @@
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { GetServerSideProps } from 'next';
 import AppLayout from '../../components/AppLayout/AppLayout';
-import { BlogPostResponse, PageProps, PromptData } from '../../types';
+import { GeneratePostAPIResponse, PageProps, PromptData } from '../../types';
 import { useState } from 'react';
 
 // post/new generate topics with OPENAI API
@@ -28,7 +28,7 @@ const NewPost: PageWithLayout<React.FC<PageProps>> = (props) => {
 
 	const handlePostGenSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		const response = await fetch('/api/generatePost', {
+		const response = await fetch('/api/generatePost_gpt3-5-turbo', {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
@@ -36,9 +36,14 @@ const NewPost: PageWithLayout<React.FC<PageProps>> = (props) => {
 			body: JSON.stringify(formData),
 		});
 
-		const json: BlogPostResponse = await response.json();
+		const json: GeneratePostAPIResponse = await response.json();
 
-		setPostContent(json.post.postContent);
+		if (json.error) {
+			console.error(json.error);
+			return;
+		} else {
+			setPostContent(json.post.postContent);
+		}
 	};
 
 	return (
