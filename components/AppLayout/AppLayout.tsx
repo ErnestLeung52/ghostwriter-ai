@@ -12,7 +12,7 @@ import { PageProps } from '../../types';
 
 const AppLayout: React.FC<PageProps> = (props) => {
 	const { user } = useUser();
-	console.log(3, props);
+	// console.log(3, props);
 	// console.log('layout', 4);
 	return (
 		<div className='grid grid-cols-[300px_1fr] h-screen max-h-screen'>
@@ -53,7 +53,7 @@ const AppLayout: React.FC<PageProps> = (props) => {
 					)}
 				</div>
 			</div>
-			<div className='bg-slate-400'>{props.children}</div>
+			{props.children}
 		</div>
 	);
 };

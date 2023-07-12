@@ -13,10 +13,9 @@ type Auth0User = {
 };
 
 export type PageProps = {
-	test: string;
 	user: Auth0User;
 	children: React.ReactNode;
-};
+} & BlogPostData;
 
 export type PageWithLayout<T> = T & { getLayout?: (page: JSX.Element, pageProps?: PageProps) => JSX.Element };
 
