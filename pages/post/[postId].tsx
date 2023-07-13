@@ -6,9 +6,10 @@ import clientPromise from '../../lib/mongodb';
 import { ObjectId } from 'mongodb';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHashtag } from '@fortawesome/free-solid-svg-icons';
+import { getAppProps } from '../../utils/getAppProps';
 
 const Post: PageWithLayout<React.FC<PageProps>> = (props) => {
-	console.log(props);
+	// console.log(props);
 	return (
 		<div className='overflow-auto h-full'>
 			<div className='max-w-screen-sm mx-auto'>
@@ -46,6 +47,9 @@ Post.getLayout = function getLayout(page: JSX.Element, pageProps: PageProps) {
 export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
 	getServerSideProps: async (ctx) => {
 		// Session 23
+
+		const props = await getAppProps(ctx);
+
 		const userSession = await getSession(ctx.req, ctx.res);
 		const client = await clientPromise;
 		const db = client.db('GhostWriterAI');
@@ -76,6 +80,7 @@ export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
 				title: post.title,
 				metaDescription: post.metaDescription,
 				keywords: post.keywords,
+				...props,
 			},
 		};
 	},

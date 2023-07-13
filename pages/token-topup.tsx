@@ -2,6 +2,7 @@ import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { GetServerSideProps } from 'next';
 import AppLayout from '../components/AppLayout/AppLayout';
 import { PageProps } from '../types';
+import { getAppProps } from '../utils/getAppProps';
 
 type Props = {};
 // type PageProps = {
@@ -34,13 +35,10 @@ TokenTopup.getLayout = function getLayout(page: JSX.Element, pageProps: PageProp
 };
 
 export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
-	getServerSideProps: async (ctx) => {
-		// The context (ctx) parameter is the context object for the getServerSideProps function.
-		// You can use this to access request-specific parameters.
+	async getServerSideProps(ctx) {
+		const props = await getAppProps(ctx);
 		return {
-			props: {
-				test: 'this is a test',
-			},
+			props,
 		};
 	},
 });

@@ -12,10 +12,17 @@ type Auth0User = {
 	updated_at: string;
 };
 
+type GetAppProps = {
+	availableTokens: number;
+	posts: BlogPostData[];
+	postId: string | null;
+};
+
 export type PageProps = {
 	user: Auth0User;
 	children: React.ReactNode;
-} & BlogPostData;
+} & BlogPostData &
+	GetAppProps;
 
 export type PageWithLayout<T> = T & { getLayout?: (page: JSX.Element, pageProps?: PageProps) => JSX.Element };
 
@@ -29,6 +36,8 @@ export type BlogPostData = {
 	keywords: string;
 	userId: string;
 	created: Date;
+	availableTokens: number;
+	_id: string;
 };
 
 export type GeneratePostAPIResponse = {

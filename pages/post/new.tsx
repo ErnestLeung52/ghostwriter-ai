@@ -4,6 +4,7 @@ import AppLayout from '../../components/AppLayout/AppLayout';
 import { GeneratePostAPIResponse, PageProps, PageWithLayout, PromptData } from '../../types';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import { getAppProps } from '../../utils/getAppProps';
 
 // post/new generate topics with OPENAI API
 const NewPost: PageWithLayout<React.FC<PageProps>> = (props) => {
@@ -82,13 +83,10 @@ NewPost.getLayout = function getLayout(page: JSX.Element, pageProps: PageProps) 
 };
 
 export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
-	getServerSideProps: async (ctx) => {
-		// The context (ctx) parameter is the context object for the getServerSideProps function.
-		// You can use this to access request-specific parameters.
+	async getServerSideProps(ctx) {
+		const props = await getAppProps(ctx);
 		return {
-			props: {
-				test: 'test from new post',
-			},
+			props,
 		};
 	},
 });
