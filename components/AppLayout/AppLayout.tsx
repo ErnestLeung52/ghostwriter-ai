@@ -6,14 +6,11 @@ import { faCoins } from '@fortawesome/free-solid-svg-icons';
 import { Logo } from '../Logo/index';
 import { PageProps } from '../../types';
 
-// interface AppLayoutProps {
-// 	children?: React.ReactNode;
-// }
-
-const AppLayout: React.FC<PageProps> = (props) => {
+const AppLayout: React.FC<PageProps> = ({ children, availableTokens, posts, postId }) => {
 	const { user } = useUser();
-	// console.log(3, props);
 	// console.log('layout', 4);
+	// console.log(posts);
+
 	return (
 		<div className='grid grid-cols-[300px_1fr] h-screen max-h-screen'>
 			<div className='flex flex-col overflow-hidden text-white'>
@@ -25,10 +22,21 @@ const AppLayout: React.FC<PageProps> = (props) => {
 					</Link>
 					<Link href='/token-topup' className='block mt-2 text-center'>
 						<FontAwesomeIcon icon={faCoins} className='text-yellow-400' />
-						<span className='pl-1'>0 tokens available</span>
+						<span className='pl-1'>{availableTokens} tokens available</span>
 					</Link>
 				</div>
-				<div className='flex-1 overflow-auto bg-gradient-to-b from-slate-800 to-cyan-800'>List of posts</div>
+				<div className='px-4 flex-1 overflow-auto bg-gradient-to-b from-slate-800 to-cyan-800'>
+					{posts.map((post) => (
+						<Link
+							href={`/post/${post._id}`}
+							key={post._id}
+							className={`py-1 border border-white/0 block text-ellipsis overflow-hidden whitespace-nowrap my-1 px-2 bg-white/10 cursor-pointer rounded-sm 
+							${postId === post._id ? 'bg-white/20 border-white' : ''}`}
+						>
+							{post.topic}
+						</Link>
+					))}
+				</div>
 				<div className='bg-cyan-800 flex items-center gap-2 border-t border-t-black/50 h-20 px-2'>
 					{!!user ? (
 						<>
@@ -53,7 +61,7 @@ const AppLayout: React.FC<PageProps> = (props) => {
 					)}
 				</div>
 			</div>
-			{props.children}
+			{children}
 		</div>
 	);
 };
