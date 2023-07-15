@@ -26,6 +26,11 @@ export default withApiAuthRequired(async function handler(
 
 	const { topic, keywords } = req.body;
 
+	if (!topic || !keywords || topic.length > 100 || keywords.length > 80) {
+		res.status(422).json({ error: 'Missing topic or keywords' });
+		return;
+	}
+
 	const postContentResponse = await openai.createChatCompletion({
 		model: 'gpt-3.5-turbo',
 		temperature: 0,
@@ -34,7 +39,7 @@ export default withApiAuthRequired(async function handler(
 			{
 				role: 'user',
 				content: `Write a long and detailed SEO-friendly blog post about ${topic}, that targets the following comma-separated keywords: ${keywords}.
-	      The content should be formatted in SEO-friendly HTML,
+	      The response blog post should be formatted in SEO-friendly HTML,
 	      limited to the following HTML tags: p, h1, h2, h3, h4, h5, h6, strong, ul, ol, li, i'`,
 			},
 		],

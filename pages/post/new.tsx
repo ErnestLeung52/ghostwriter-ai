@@ -72,6 +72,7 @@ const NewPost: PageWithLayout<React.FC<PageProps>> = (props) => {
 								name='topic'
 								value={formData.topic}
 								onChange={handleInputChange}
+								maxLength={100}
 							/>
 						</div>
 						<div>
@@ -83,11 +84,16 @@ const NewPost: PageWithLayout<React.FC<PageProps>> = (props) => {
 								name='keywords'
 								value={formData.keywords}
 								onChange={handleInputChange}
+								maxLength={80}
 							/>
 							<small className='block mb-2'>Separate keywords with coma</small>
 						</div>
 
-						<button type='submit' className='btn'>
+						<button
+							type='submit'
+							className='btn'
+							disabled={!formData.topic.trim() || !formData.keywords.trim()}
+						>
 							Generate
 						</button>
 					</form>
@@ -109,6 +115,16 @@ NewPost.getLayout = function getLayout(page: JSX.Element, pageProps: PageProps) 
 export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
 	async getServerSideProps(ctx) {
 		const props = await getAppProps(ctx);
+
+		if (!props.availableTokens) {
+			return {
+				redirect: {
+					destination: '/token-topup',
+					permanent: false,
+				},
+			};
+		}
+
 		return {
 			props,
 		};
