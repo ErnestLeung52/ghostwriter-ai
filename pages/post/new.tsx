@@ -5,6 +5,8 @@ import { GeneratePostAPIResponse, PageProps, PageWithLayout, PromptData } from '
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { getAppProps } from '../../utils/getAppProps';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBrain } from '@fortawesome/free-solid-svg-icons';
 
 // post/new generate topics with OPENAI API
 const NewPost: PageWithLayout<React.FC<PageProps>> = (props) => {
@@ -12,63 +14,85 @@ const NewPost: PageWithLayout<React.FC<PageProps>> = (props) => {
 	const router = useRouter();
 	const [formData, setFormData] = useState<PromptData>({ topic: '', keywords: '' });
 
+	const [loadingData, setLoadingData] = useState(false);
+
 	const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
 		setFormData({ ...formData, [event.target.name]: event.target.value });
 	};
 
 	const handlePostGenSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		const response = await fetch('/api/generatePost_gpt3-5-turbo', {
-			method: 'POST',
-			headers: {
-				'content-type': 'application/json',
-			},
-			body: JSON.stringify(formData),
-		});
+		setLoadingData(true);
 
-		const json: GeneratePostAPIResponse = await response.json();
+		try {
+			const response = await fetch('/api/generatePost_gpt3-5-turbo', {
+				method: 'POST',
+				headers: {
+					'content-type': 'application/json',
+				},
+				body: JSON.stringify(formData),
+			});
 
-		console.log('RESULT:', json);
+			const json: GeneratePostAPIResponse = await response.json();
 
-		if (json.error || !json.postId) {
-			console.error(json.error);
-			return;
-		} else {
-			router.push(`/post/${json.postId}`);
+			// console.log('RESULT:', json);
+
+			if (json.error || !json.postId) {
+				console.error(json.error);
+				return;
+			} else {
+				router.push(`/post/${json.postId}`);
+			}
+		} catch (error) {
+			setLoadingData(false);
 		}
 	};
 
 	return (
-		<div>
-			<form onSubmit={handlePostGenSubmit}>
-				<div>
-					<label>
-						<strong>Generate a blog post on the topic of:</strong>
-					</label>
-					<textarea
-						className='resize-none border border-slate-500 w-full block my-2 px-4 py-2 rounded-sm'
-						name='topic'
-						value={formData.topic}
-						onChange={handleInputChange}
-					/>
+		<div className='h-full overflow-hidden'>
+			{!!loadingData && (
+				<div className='text-green-500 flex h-full animate-pulse w-full flex-col justify-center items-center'>
+					<FontAwesomeIcon icon={faBrain} className='text-8xl' />
+					<h6>Generating...</h6>
 				</div>
-				<div>
-					<label>
-						<strong>Targeting the following keywords:</strong>
-					</label>
-					<textarea
-						className='resize-none border border-slate-500 w-full block my-2 px-4 py-2 rounded-sm'
-						name='keywords'
-						value={formData.keywords}
-						onChange={handleInputChange}
-					/>
+			)}
+
+			{!loadingData && (
+				<div className='w-full h-full flex flex-col overflow-auto'>
+					<form
+						onSubmit={handlePostGenSubmit}
+						className='m-auto w-full max-w-screen-sm bg-slate-100 p-4 rounded-md shadow-xl border border-slate-200 shadow-slate-200'
+					>
+						<div>
+							<label>
+								<strong>Generate a blog post on the topic of:</strong>
+							</label>
+							<textarea
+								className='resize-none border border-slate-500 w-full block my-2 px-4 py-2 rounded-sm'
+								name='topic'
+								value={formData.topic}
+								onChange={handleInputChange}
+							/>
+						</div>
+						<div>
+							<label>
+								<strong>Targeting the following keywords:</strong>
+							</label>
+							<textarea
+								className='resize-none border border-slate-500 w-full block my-2 px-4 py-2 rounded-sm'
+								name='keywords'
+								value={formData.keywords}
+								onChange={handleInputChange}
+							/>
+							<small className='block mb-2'>Separate keywords with coma</small>
+						</div>
+
+						<button type='submit' className='btn'>
+							Generate
+						</button>
+					</form>
 				</div>
-
-				<button type='submit' className='btn'>
-					Generate
-				</button>
-			</form>
-
+			)}
 			{/* <div className='max-w-screen-sm p-10' dangerouslySetInnerHTML={{ __html: postContent }} /> */}
 		</div>
 	);
