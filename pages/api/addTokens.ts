@@ -11,7 +11,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	// Retrieve currently logged in users ID from Auth0
 	const { user } = await getSession(req, res);
 
-	const lineItems = [{ price: process.env.STRIPE_PRODUCT_PRICE_ID, quantity: 1 }];
+	const lineItems = [
+		{
+			price: process.env.STRIPE_PRODUCT_PRICE_ID,
+			quantity: 1,
+		},
+	];
 
 	const protocol = process.env.NODE_ENV === 'development' ? 'http://' : 'https://';
 	const host = req.headers.host;
@@ -29,6 +34,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			sub: user.sub,
 		},
 	});
+
+	console.log('user: ', user);
 
 	res.status(200).json({ session: checkoutSession });
 }

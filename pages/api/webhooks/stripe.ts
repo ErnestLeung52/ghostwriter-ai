@@ -32,18 +32,19 @@ const handler = async (req, res) => {
 				stripe,
 				endpointSecret,
 			});
-		} catch (error) {
-			console.log(error);
+		} catch (e) {
+			console.log('ERROR: ', e);
 		}
 
 		switch (event.type) {
 			case 'payment_intent.succeeded': {
-				// MongoDB upsert: insert + udpate
 				const client = await clientPromise;
 				const db = client.db('GhostWriterAI');
 
 				const paymentIntent = event.data.object;
 				const auth0Id = paymentIntent.metadata.sub;
+
+				// console.log('AUTH 0 ID: ', paymentIntent);
 
 				const userProfile = await db.collection('users').updateOne(
 					{
@@ -62,11 +63,9 @@ const handler = async (req, res) => {
 					}
 				);
 			}
-
 			default:
-				console.log(`Unhandled event type ${event.type}`);
+				console.log('UNHANDLED EVENT: ', event.type);
 		}
-
 		res.status(200).json({ received: true });
 	}
 };
