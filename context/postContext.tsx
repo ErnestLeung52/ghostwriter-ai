@@ -4,7 +4,7 @@ import { BlogPostData } from '../types';
 type PostContextType = {
 	posts?: BlogPostData[];
 	setPostsFromSSR?: (postsFromSSR: BlogPostData[]) => void;
-	getPosts?: (params: { lastPostDate?: Date }) => Promise<void>;
+	getPosts?: (params: { lastPostDate?: Date | String; getNewerPosts?: Boolean }) => Promise<void>;
 	noMorePosts?: Boolean;
 };
 
@@ -29,13 +29,13 @@ export const PostsProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 		});
 	}, []);
 
-	const getPosts = useCallback(async ({ lastPostDate }) => {
+	const getPosts = useCallback(async ({ lastPostDate, getNewerPosts = false }) => {
 		const result = await fetch('/api/getPosts', {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json',
 			},
-			body: JSON.stringify({ lastPostDate }),
+			body: JSON.stringify({ lastPostDate, getNewerPosts }),
 		});
 
 		const json = await result.json();

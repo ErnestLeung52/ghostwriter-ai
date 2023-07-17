@@ -16,6 +16,7 @@ type GetAppProps = {
 	availableTokens: number;
 	posts: BlogPostData[];
 	postId: string | null;
+	postCreated: string;
 };
 
 export type PageProps = {

@@ -9,7 +9,7 @@ import { faHashtag } from '@fortawesome/free-solid-svg-icons';
 import { getAppProps } from '../../utils/getAppProps';
 
 const Post: PageWithLayout<React.FC<PageProps>> = (props) => {
-	// console.log(props);
+	console.log(props.title);
 	return (
 		<div className='overflow-auto h-full'>
 			<div className='max-w-screen-sm mx-auto'>
@@ -29,7 +29,7 @@ const Post: PageWithLayout<React.FC<PageProps>> = (props) => {
 					))}
 				</div>
 
-				<div className='text-sm font-bold mt-6 p-2 bg-stone-200 rounded-sm'>Blog postdid</div>
+				<div className='text-sm font-bold mt-6 p-2 bg-stone-200 rounded-sm'>Blog Post</div>
 
 				<div dangerouslySetInnerHTML={{ __html: props.postContent || '' }} />
 			</div>
@@ -80,6 +80,7 @@ export const getServerSideProps: GetServerSideProps = withPageAuthRequired({
 				title: post.title,
 				metaDescription: post.metaDescription,
 				keywords: post.keywords,
+				postCreated: post.created.toString(),
 				...props,
 			},
 		};

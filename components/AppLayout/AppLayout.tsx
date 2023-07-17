@@ -8,14 +8,21 @@ import { PageProps } from '../../types';
 import { useContext, useEffect } from 'react';
 import PostsContext from '../../context/postContext';
 
-const AppLayout: React.FC<PageProps> = ({ children, availableTokens, posts: postsFromSSR, postId }) => {
+const AppLayout: React.FC<PageProps> = ({ children, availableTokens, posts: postsFromSSR, postId, postCreated }) => {
 	const { user } = useUser();
 
 	const { setPostsFromSSR, posts, getPosts, noMorePosts } = useContext(PostsContext);
 
 	useEffect(() => {
 		setPostsFromSSR(postsFromSSR);
-	}, [postsFromSSR, setPostsFromSSR]);
+
+		if (postId) {
+			const exists = postsFromSSR.find((post) => post._id === postId);
+			if (!exists) {
+				getPosts({ getNewerPosts: true, lastPostDate: postCreated });
+			}
+		}
+	}, [postsFromSSR, setPostsFromSSR, postId, postCreated, getPosts]);
 
 	return (
 		<div className='grid grid-cols-[300px_1fr] h-screen max-h-screen'>
