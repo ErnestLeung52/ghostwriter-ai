@@ -5,11 +5,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoins } from '@fortawesome/free-solid-svg-icons';
 import { Logo } from '../Logo/index';
 import { PageProps } from '../../types';
+import { useContext, useEffect } from 'react';
+import PostsContext from '../../context/postContext';
 
-const AppLayout: React.FC<PageProps> = ({ children, availableTokens, posts, postId }) => {
+const AppLayout: React.FC<PageProps> = ({ children, availableTokens, posts: postsFromSSR, postId }) => {
 	const { user } = useUser();
-	// console.log('layout', 4);
-	// console.log(posts);
+
+	const { setPostsFromSSR, posts } = useContext(PostsContext);
+
+	useEffect(() => {
+		setPostsFromSSR(postsFromSSR);
+	}, [postsFromSSR, setPostsFromSSR]);
 
 	return (
 		<div className='grid grid-cols-[300px_1fr] h-screen max-h-screen'>
@@ -36,6 +42,9 @@ const AppLayout: React.FC<PageProps> = ({ children, availableTokens, posts, post
 							{post.topic}
 						</Link>
 					))}
+					<div className='hover:underline text-sm text-slate-400 text-center cursor-pointer mt-4'>
+						Load more posts
+					</div>
 				</div>
 				<div className='bg-cyan-800 flex items-center gap-2 border-t border-t-black/50 h-20 px-2'>
 					{!!user ? (
