@@ -11,7 +11,7 @@ import PostsContext from '../../context/postContext';
 const AppLayout: React.FC<PageProps> = ({ children, availableTokens, posts: postsFromSSR, postId }) => {
 	const { user } = useUser();
 
-	const { setPostsFromSSR, posts } = useContext(PostsContext);
+	const { setPostsFromSSR, posts, getPosts, noMorePosts } = useContext(PostsContext);
 
 	useEffect(() => {
 		setPostsFromSSR(postsFromSSR);
@@ -42,10 +42,19 @@ const AppLayout: React.FC<PageProps> = ({ children, availableTokens, posts: post
 							{post.topic}
 						</Link>
 					))}
-					<div className='hover:underline text-sm text-slate-400 text-center cursor-pointer mt-4'>
-						Load more posts
-					</div>
+
+					{!noMorePosts && (
+						<div
+							onClick={() => {
+								getPosts({ lastPostDate: posts[posts.length - 1].created });
+							}}
+							className='hover:underline text-sm text-slate-400 text-center cursor-pointer mt-4'
+						>
+							Load more posts
+						</div>
+					)}
 				</div>
+
 				<div className='bg-cyan-800 flex items-center gap-2 border-t border-t-black/50 h-20 px-2'>
 					{!!user ? (
 						<>
