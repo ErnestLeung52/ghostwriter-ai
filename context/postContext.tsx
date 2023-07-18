@@ -6,6 +6,7 @@ type PostContextType = {
 	setPostsFromSSR?: (postsFromSSR: BlogPostData[]) => void;
 	getPosts?: (params: { lastPostDate?: Date | String; getNewerPosts?: Boolean }) => Promise<void>;
 	noMorePosts?: Boolean;
+	deletePost?: (postId: string) => void;
 };
 
 const PostsContext = React.createContext<PostContextType>({});
@@ -15,6 +16,18 @@ export default PostsContext;
 export const PostsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 	const [posts, setPosts] = useState<BlogPostData[]>([]);
 	const [noMorePosts, setNoMorePosts] = useState<Boolean>(false);
+
+	const deletePost = useCallback((postId: string) => {
+		setPosts((value) => {
+			const newPosts = [];
+			value.forEach((post) => {
+				if (post._id !== postId) {
+					newPosts.push(post);
+				}
+			});
+			return newPosts;
+		});
+	}, []);
 
 	const setPostsFromSSR = useCallback((postsFromSSR = []) => {
 		setPosts((value) => {
@@ -58,7 +71,7 @@ export const PostsProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 	}, []);
 
 	return (
-		<PostsContext.Provider value={{ posts, setPostsFromSSR, getPosts, noMorePosts }}>
+		<PostsContext.Provider value={{ posts, setPostsFromSSR, getPosts, noMorePosts, deletePost }}>
 			{children}
 		</PostsContext.Provider>
 	);

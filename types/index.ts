@@ -21,6 +21,7 @@ type GetAppProps = {
 
 export type PageProps = {
 	user: Auth0User;
+	id: string;
 	children: React.ReactNode;
 } & BlogPostData &
 	GetAppProps;
