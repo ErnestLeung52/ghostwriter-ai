@@ -4,6 +4,7 @@ import { DM_Sans, DM_Serif_Display } from '@next/font/google';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { PostsProvider } from '../context/postContext';
+import Head from 'next/head';
 config.autoAddCss = false;
 
 const dmSans = DM_Sans({
@@ -24,13 +25,19 @@ function MyApp({ Component, pageProps }) {
 	const getLayout = Component.getLayout || ((page: JSX.Element) => page);
 
 	return (
-		<UserProvider>
-			<PostsProvider>
-				<main className={`${dmSans.variable} ${dmSerifDisplay.variable} font-body`}>
-					{getLayout(<Component {...pageProps} />, pageProps)}
-				</main>
-			</PostsProvider>
-		</UserProvider>
+		<>
+			<Head>
+				<title>GhostWriter AI</title>
+				<link rel='icon' href='/appLogo.png' />
+			</Head>
+			<UserProvider>
+				<PostsProvider>
+					<main className={`${dmSans.variable} ${dmSerifDisplay.variable} font-body`}>
+						{getLayout(<Component {...pageProps} />, pageProps)}
+					</main>
+				</PostsProvider>
+			</UserProvider>
+		</>
 	);
 }
 
