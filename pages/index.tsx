@@ -17,7 +17,7 @@ const Home = (props: Props) => {
 		<div>
 			<div className='w-screen h-screen overflow-hidden flex justify-center items-center relative'>
 				<Image src={HeroImage} alt='Hero' fill className='absolute opacity-80' />
-				<div className='relative z-10 text-white px-10 py-5 text-center max-w-screen-sm bg-slate-900/90 rounded-md backdrop-blur-sm'>
+				<div className='relative z-10 text-white px-10 py-5 text-center max-w-screen-sm bg-slate-900/90 rounded-md backdrop-blur-sm opacity-90'>
 					<Logo />
 					<div className='text-xl text-[#c9affd]'>
 						Your smart <span className='bold'>{text}.</span>

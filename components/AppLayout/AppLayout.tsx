@@ -28,7 +28,9 @@ const AppLayout: React.FC<PageProps> = ({ children, availableTokens, posts: post
 		<div className='grid grid-cols-[300px_1fr] h-screen max-h-screen'>
 			<div className='flex flex-col overflow-hidden text-white'>
 				<div className='bg-slate-800 px-2'>
-					<Logo />
+					<div className='px-2'>
+						<Logo />
+					</div>
 
 					<Link href='/post/new' className='btn'>
 						New post
@@ -38,7 +40,7 @@ const AppLayout: React.FC<PageProps> = ({ children, availableTokens, posts: post
 						<span className='pl-1'>{availableTokens} tokens available</span>
 					</Link>
 				</div>
-				<div className='px-4 flex-1 overflow-auto bg-gradient-to-b from-slate-800 to-cyan-800'>
+				<div className='px-4 flex-1 overflow-auto bg-gradient-to-b from-slate-800 to-[#29124d]'>
 					{posts.map((post) => (
 						<Link
 							href={`/post/${post._id}`}
@@ -62,7 +64,7 @@ const AppLayout: React.FC<PageProps> = ({ children, availableTokens, posts: post
 					)}
 				</div>
 
-				<div className='bg-cyan-800 flex items-center gap-2 border-t border-t-black/50 h-20 px-2'>
+				<div className='bg-[#7b4adf] flex items-center gap-2 border-t border-t-[#b895ff]/50 h-20 px-2'>
 					{!!user ? (
 						<>
 							<div className='min-w-[50px]'>
