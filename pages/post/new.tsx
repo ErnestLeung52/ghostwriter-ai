@@ -49,7 +49,7 @@ const NewPost: PageWithLayout<React.FC<PageProps>> = (props) => {
 	};
 
 	return (
-		<div className='h-full overflow-hidden bg-[#23133b]'>
+		<div className='h-full overflow-hidden bg-slate-900'>
 			{!!loadingData && (
 				<div className='text-green-500 flex h-full animate-pulse w-full flex-col justify-center items-center'>
 					<FontAwesomeIcon icon={faBrain} className='text-8xl' />
