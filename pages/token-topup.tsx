@@ -9,7 +9,7 @@ import { useState } from 'react';
 type Props = {};
 
 const TokenTopup = (props: Props) => {
-	const [openModal, setOpenModal] = useState<Boolean>(true);
+	const [openModal, setOpenModal] = useState<Boolean>(false);
 
 	const handleAddTokenClick = async () => {
 		const result = await fetch(`/api/addTokens`, {
@@ -22,8 +22,8 @@ const TokenTopup = (props: Props) => {
 
 	return (
 		<>
-			<div className='flex flex-col text-white justify-center items-center bg-[#23133b]'>
-				<div className='mx-24'>
+			<div className='flex flex-col text-white justify-center items-center bg-slate-900'>
+				<div className='w-[650px]'>
 					<div className='text-center text-[#b895ff] font-bold text-3xl pb-3'>Token Top-up</div>
 					<ol className='list-disc font-light text-slate-300 pl-4 text-md'>
 						<li>
@@ -52,11 +52,11 @@ const TokenTopup = (props: Props) => {
 					</div>
 				</div>
 			</div>
-					<CheckoutModal
-						openModal={openModal}
-						setOpenModal={setOpenModal}
-						handleAddTokenClick={handleAddTokenClick}
-					/>
+			<CheckoutModal
+				openModal={openModal}
+				setOpenModal={setOpenModal}
+				handleAddTokenClick={handleAddTokenClick}
+			/>
 		</>
 	);
 };
