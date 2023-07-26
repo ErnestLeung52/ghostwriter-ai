@@ -17,8 +17,8 @@ const TokenTopup = (props: Props) => {
 	};
 
 	return (
-		<div>
-			<h1>token-topup</h1>
+		<div className='flex flex-col justify-center items-center bg-[#23133b]'>
+			<h1 className='text-white'>Purchase Token</h1>
 			<button className='btn' onClick={handleAddTokenClick}>
 				Add tokens
 			</button>
