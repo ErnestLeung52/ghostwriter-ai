@@ -25,6 +25,17 @@ STRIPE_SECRET_KEY=
 STRIPE_WEBHOOK_SECRET=
 ```
 
+## Stripe Payment Webhook Test
+
+To set up a dummy payment link with Stripe, follow these steps:
+
+1. Register a Stripe account and enable Developers mode
+2. Secret Key is provided in the API keys tab
+3. Download the latest Stripe CLI and login Stripe via CLI ``stripe login``
+4. Visit the Webhooks tab -> Add an endpoint -> Test in a local environment
+5. Forward events to the webhook via CLI ``stripe listen --forward-to localhost:[your-localhost-port]/webhook``
+6. Webhook signing secret will be provided in the CLI and use ths secret in the .env.local file
+
 # Future Iterations
 
 Looking ahead, we are planning to expand the functionality of GhostWriterAI. My planned enhancements include:

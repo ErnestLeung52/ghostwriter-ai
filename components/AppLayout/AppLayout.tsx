@@ -7,9 +7,11 @@ import { Logo } from '../Logo/index';
 import { PageProps } from '../../types';
 import { useContext, useEffect } from 'react';
 import PostsContext from '../../context/postContext';
+import { useRouter } from 'next/router';
 
 const AppLayout: React.FC<PageProps> = ({ children, availableTokens, posts: postsFromSSR, postId, postCreated }) => {
 	const { user } = useUser();
+	const router = useRouter();
 
 	const { setPostsFromSSR, posts, getPosts, noMorePosts } = useContext(PostsContext);
 
@@ -27,25 +29,39 @@ const AppLayout: React.FC<PageProps> = ({ children, availableTokens, posts: post
 	return (
 		<div className='grid grid-cols-[300px_1fr] h-screen max-h-screen'>
 			<div className='flex flex-col overflow-hidden text-white'>
-				<div className='bg-slate-800 px-2'>
+				<div className='bg-[#23133b] px-2'>
 					<div className='px-2'>
 						<Logo />
 					</div>
 
-					<Link href='/post/new' className='btn'>
-						New post
-					</Link>
-					<Link href='/token-topup' className='block mt-2 text-center'>
-						<FontAwesomeIcon icon={faCoins} className='text-yellow-400' />
-						<span className='pl-1'>{availableTokens} tokens available</span>
-					</Link>
+					<div className='border-b-[1px] border-b-[#b895ff]/30'></div>
+
+					<div className='flex flex-row w-full justify-center px-2 mt-5 text-center'>
+						<div className='flex-grow py-2 rounded-l-full w-[100px] backdrop-blur bg-white/50'>
+							<FontAwesomeIcon icon={faCoins} className='text-yellow-400' />
+							<span className='pl-1'> {availableTokens} Tokens</span>
+						</div>
+						<button
+							onClick={() => router.push('/token-topup')}
+							className='flex-grow py-2 rounded-r-full border-l-0 w-[100px] bg-[#7b4adf] hover:bg-[#b895ff]'
+						>
+							Top-up
+						</button>
+					</div>
+
+					<div className='px-2'>
+						<Link href='/post/new' className='btn mt-6'>
+							Create Blog
+						</Link>
+					</div>
 				</div>
-				<div className='px-4 flex-1 overflow-auto bg-gradient-to-b from-slate-800 to-[#29124d]'>
+
+				<div className='py-4 px-4 flex-1 overflow-auto bg-gradient-to-b from-[#23133b] to-[#29124d]'>
 					{posts.map((post) => (
 						<Link
 							href={`/post/${post._id}`}
 							key={post._id}
-							className={`py-1 border border-white/0 block text-ellipsis overflow-hidden whitespace-nowrap my-1 px-2 bg-white/10 cursor-pointer rounded-sm 
+							className={`py-1 border border-white/0 block text-ellipsis overflow-hidden whitespace-nowrap my-1 px-2 bg-white/10 cursor-pointer rounded-md 
 							${postId === post._id ? 'bg-white/20 border-white' : ''}`}
 						>
 							{post.topic}
