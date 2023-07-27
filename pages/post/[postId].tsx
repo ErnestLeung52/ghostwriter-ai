@@ -37,37 +37,37 @@ const Post: PageWithLayout<React.FC<PageProps>> = (props) => {
 	};
 
 	return (
-		<div className='overflow-auto h-full'>
+		<div className='overflow-auto h-full bg-slate-900 text-slate-100'>
 			<div className='max-w-screen-sm mx-auto'>
-				<div className='text-sm font-bold mt-6 p-2 bg-stone-200 rounded-sm'>SEO Title and Meta Description</div>
-				<div className='p-4 my-2 border border-stone-200 rounded-md'>
-					<div className='text-blue-600 text-2xl font-bold'>{props.title}</div>
+				<div className='text-sm font-bold mt-6 p-2 bg-[#7b4adf] rounded-md'>SEO Title and Meta Description</div>
+				<div className='p-4 my-2 border border-slate-700 rounded-md'>
+					<div className='text-indigo-400 text-2xl font-bold'>{props.title}</div>
 					<div className='mt-2'>{props.metaDescription}</div>
 				</div>
 
-				<div className='text-sm font-bold mt-6 p-2 bg-stone-200 rounded-sm'>Keywords</div>
+				<div className='text-sm font-bold mt-6 p-2 bg-[#7b4adf] rounded-md'>Keywords</div>
 				<div className='flex flex-wrap pt-2 gap-1'>
 					{props.keywords.split(',').map((keyword, i) => (
-						<div key={i} className='p-2 rounded-full bg-slate-800 text-white'>
+						<div key={i} className='p-2 rounded-full bg-slate-700 text-white'>
 							<FontAwesomeIcon icon={faHashtag} />
 							{keyword}
 						</div>
 					))}
 				</div>
 
-				<div className='text-sm font-bold mt-6 p-2 bg-stone-200 rounded-sm'>Blog Post</div>
+				<div className='text-sm font-bold mt-6 p-2 bg-[#7b4adf] rounded-md'>Blog Post</div>
 
 				<div dangerouslySetInnerHTML={{ __html: props.postContent || '' }} />
 				{!showDeleteConfirm && (
-					<div className='my-4'>
-						<button onClick={() => setShowDeleteConfirm(true)} className='btn bg-red-600 hover:bg-red-700'>
+					<div className='my-10'>
+						<button onClick={() => setShowDeleteConfirm(true)} className='btn bg-red-700 hover:bg-red-600'>
 							Delete Post
 						</button>
 					</div>
 				)}
 				{!!showDeleteConfirm && (
-					<div>
-						<p className='p-2 bg-red-300 text-center'>
+					<div className='my-10'>
+						<p className='p-2 bg-red-400 text-center rounded-md'>
 							Are you sure you want to delete this post? This action is irreversible
 						</p>
 
