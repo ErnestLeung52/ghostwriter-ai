@@ -80,7 +80,7 @@ const AppLayout: React.FC<PageProps> = ({ children, availableTokens, posts: post
 					)}
 				</div>
 
-				<div className='bg-[#7b4adf] flex items-center gap-2 border-t border-t-[#b895ff]/50 h-20 px-2'>
+				<div className='bg-[#553CF8] flex items-center gap-2 border-t border-t-[#b895ff]/50 h-20 px-2'>
 					{!!user ? (
 						<>
 							<div className='min-w-[50px]'>
